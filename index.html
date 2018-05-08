@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Rock Paper Scissors!</title>
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+  <link rel="stylesheet" href="assets/styles/style.css">
+</head>
+
+<body>
+  <div class="container">
+    <br>
+    <!-- Jumbotron -->
+    <div class="jumbotron">
+      <h1 class="text-center">Rock Paper Scissors!</h1>
+    </div>
+    <!-- Row -->
+    <div class="row" id="name-submit">
+      <div class="col-md-8">
+        <form role="form">
+          <div class="form-group">
+            <label for="name-input">Name:</label>
+            <input class="form-control" id="name-input" type="text">
+          </div>
+          <button class="btn btn-default" id="add-user" type="submit data" data-player="player1">Submit</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="row">
+      <!-- Left Panel-->
+      <div class="col-md-4">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Player 1</h3>
+          </div>
+          <div class="panel-body">
+            <!-- Form to pick player-->
+            <form role="form">
+              <div class="form-group">
+                <label for="name-input">Name:</label>
+                <input class="form-control" id="name-input" type="text">
+              </div>
+              <!-- <button class="btn btn-default" id="add-user" type="submit data" data-player="player1">Submit</button> -->
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Middle Panel -->
+      <div class="col-md-4">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title"></h3>Battleground</h3>
+          </div>
+          <div class="panel-body">
+            <h2 id="name-display">The winner Is</h2>
+            <br>
+            <div id="battle-outcome"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Panel -->
+      <div class="col-md-4">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Player 2</h3>
+          </div>
+          <div class="panel-body">
+            <!-- Form to pick player-->
+            <form role="form">
+              <div class="form-group">
+                <label for="name-input">Name:</label>
+                <input class="form-control" id="name-input" type="text">
+              </div>
+              <!-- <button class="btn btn-default" id="add-user" type="submit data" data-player="player1">Submit</button> -->
+            </form>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Messaging Functionality -->
+      <div class="row">
+        <div class="col-md-4">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">Chat</h3>
+              </div>
+              <div class="panel-body">
+                <input id="username" type="text" placeholder="Name"><br/>
+                <input id="text" type="text" placeholder="Message"><br/>
+                <button id="post">Post</button><br/>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-8">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h3 class="panel-title">Messages</h3>
+                </div>
+                <div class="panel-body">
+                  <div id="results">Results</div>
+                </div>
+              </div>
+            </div>
+      </div>
+      <br>
+
+  </div>
+
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+   <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+   <script src="assets/javascript/rps.js"></script>
+</body>
+
+</html>
