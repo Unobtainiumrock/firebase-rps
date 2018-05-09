@@ -18,14 +18,13 @@ $(document).ready(function() {
   var usernameInput = $('#username');
   var textInput = $('#text');
   var postButton = $('#post');
-  var peopleConnected = 0;
+  var peopleConnected;
 
   // Ref to where we will store connections
   var connectionsRef = database.ref("/connections");
   //Provided by Firebase
   var connectedRef = database.ref(".info/connected");
-  // Start game
-  initializeGame();
+
 
   // Save useful references for using throughout the app
   var playerRef = database.ref('players');
@@ -35,20 +34,21 @@ $(document).ready(function() {
 
 
   // Firebase data listeners
+  
   connectedRef.on('value', function(snap) {
-
+    
     // If they are connected..
     if (snap.val()) {
       // If the game isn't already full
-      if(peopleConnected < 2) {
+      // if(peopleConnected < 2) {
         // Add user to the connections list.
         var con = connectionsRef.push(true);
         // Remove user from the connection list when they disconnect.
         con.onDisconnect().remove();
-      }
+      // }
     }
   });
-
+  
   connectionsRef.on('value',function(snap) {
     peopleConnected = snap.numChildren();
 
@@ -73,10 +73,6 @@ $(document).ready(function() {
     // Log Player 2 changes as they occur
     console.log(`Val:${snap.val()} Key: ${snap.key}`);
 
-    // Hide name submission after both players pick their name
-    if(snap.key === 'name') {
-      $('#name-submit').hide();
-    }
   })
 
   msgRef.on('child_added',function(snap) {
@@ -95,6 +91,46 @@ $(document).ready(function() {
     $('#results').append(msgDiv);
   })
 
+  database.ref().on('value',function(snap) {
+    // If Firebase doesn't have the game data yet, set it up
+    if(snap.child('/').numChildren() === 1) {
+
+      var gameData = {
+        turn: 1,
+        player1: {
+          name: '',
+          wins: 0,
+          losses: 0,
+          ties: 0,
+          choice: ''
+        },
+        player2: {
+          name: '',
+          wins: 0,
+          losses: 0,
+          ties: 0,
+          choice: ''
+        },
+        dataAttr: {
+          first: ''
+        }
+      }
+      
+      // Passes the game data object into fireBaseInit
+      fireBaseInit(gameData)
+
+    }
+
+    if(snap.child('connections').exists()) {
+      var connectionNum = snap.child('connections').numChildren();
+      console.log(`A connection exists! There are ${connectionNum} connections`);
+      peopleConnected = connectionNum;
+      console.log(`Local peopleConnected: ${peopleConnected}`);
+    } else {
+      console.log('No connections exist');
+    }
+  })
+
 
   // JQuery listeners
   $(document).on('click', '#add-user', function(e) {
@@ -104,6 +140,7 @@ $(document).ready(function() {
     var playerRef = database.ref('players'); 
     var thisPlayer = playerRef.child(playerNumber);
     thisPlayer.update({ name });
+    $('#name-submit').hide();
   })
 
   postButton.on('click',function() {
@@ -123,33 +160,28 @@ $(document).ready(function() {
   })
 
   // Functions
-  function initializeGame() {
-    var gameData = {
-      turn: 1,
-      player1: {
-        name: '',
-        wins: 0,
-        losses: 0,
-        ties: 0,
-        choice: ''
-      },
-      player2: {
-        name: '',
-        wins: 0,
-        losses: 0,
-        ties: 0,
-        choice: ''
-      } 
-    }
 
-    fireBaseInit(gameData)
-  }
-
+  /**
+   * Sets of the initial keys for game data on Firebase 
+   * @param  {Object} data: is an object containing game data
+   */
   function fireBaseInit(data) {
     database.ref('/players/player1').set(data.player1);
     database.ref('/players/player2').set(data.player2);
     database.ref('/turn').set({ turn: data.turn });
-    // database.ref('/messages').set({})
+    database.ref('/data-attributes').set(data.dataAttr);
+  }
+
+  /**
+   * @param  {string} key: is the key we want to add to Firebase's /data-attributes path
+   * @param  {string} val: is the value associated with the key added to Firebase. A string is used
+   *                       for numbers as well, since we can just parseInt() form string to integer
+   */
+  function firebaseDataAttr(key,val) {
+    var updaterObj = {};
+    updaterObj[key] = val;
+
+    database.ref('/data-attributes').update(updaterObj);
   }
 
 })
