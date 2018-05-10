@@ -280,18 +280,6 @@ $(document).ready(function() {
       // Empty player choices from Firebase to prevent infinite recurison
       playerOneRef.update({choice: ''});
       playerTwoRef.update({choice: ''});
-      // increment player1 wins
-      // increment player2 losses
-      // const playerOneWins = grabValFromFirebase('players/player1/','wins');
-      // const playerTwoLosses = grabValFromFirebase('players/player2/','losses');
-      // const promiseArray = [playerOneWins,playerTwoLosses];
-      // Promise.all(promiseArray)
-      //   .then((scores) => {
-      //     let p1Wins = scores[0];
-      //     let p2Losses = scores[1];
-      //     playerOneRef.update({wins: p1Wins + 1});
-      //     playerTwoRef.update({losses: p2Losses + 1});
-      //   })
       winner('player1');
     }
 
@@ -299,18 +287,6 @@ $(document).ready(function() {
       // Empty Player choices from Firebase to prevent infinite recursion
       playerOneRef.update({choice: ''});
       playerTwoRef.update({choice: ''});
-      // increment player1 losses
-      // incrememnt player2 wins
-      // const playerOneLosses = grabValFromFirebase('players/player1/', 'losses');
-      // const playerTwoWins = grabValFromFirebase('players/player2/','wins');
-      // const promiseArray = [playerOneLosses,playerTwoWins];
-      // Promise.all(promiseArray)
-      //   .then((scores) => {
-      //     let p1Losses = scores[0];
-      //     let p2Wins = scores[1];
-      //     playerOneRef.update({losses: p1Losses + 1});
-      //     playerTwoRef.update({wins: p2Wins + 1});
-      //   })
       winner('player2');
     }
  
