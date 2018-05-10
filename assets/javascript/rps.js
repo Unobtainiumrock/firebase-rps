@@ -102,7 +102,7 @@ $(document).ready(function() {
     if(snap.child('/').numChildren() === 1) {
 
       var gameData = {
-        turn: 1,
+
         player1: {
           name: '',
           wins: 0,
@@ -353,6 +353,10 @@ $(document).ready(function() {
 
 
   // Game logic functions
+
+  function resetRound() {
+    $(`#${playerNumber}-buttons`).show();
+  }
   
   /**
    * Increments the players ties
@@ -385,7 +389,7 @@ $(document).ready(function() {
       winPath = champ;
       losePath = 'player1';
     }
-
+2
     const winner = grabValFromFirebase(`players/${winPath}/`,'wins');
     const loser = grabValFromFirebase(`players/${losePath}/`,'losses');
     const promiseArray = [winner,loser];
@@ -408,10 +412,9 @@ $(document).ready(function() {
   function fireBaseInit(data) {
     database.ref('/players/player1').set(data.player1);
     database.ref('/players/player2').set(data.player2);
-    database.ref('/turn').set({ turn: data.turn });
     database.ref('/round').set(data.round);
   }
-
+s
   /**
    * @param  {string} key: is the key we want to add to Firebase's /round path
    * @param  {string} val: is the value associated with the key added to Firebase. A string is used
@@ -441,5 +444,5 @@ $(document).ready(function() {
         return value;
       })
   }
-
+  console.log('Hello world!');
 })
