@@ -192,7 +192,7 @@ $(document).ready(function() {
     $(`#player1-choice`).text(userChoice);
     $('#player1-buttons').hide();
     playerOneRef.update({choice: userChoice});
-    compareChoices();
+    // compareChoices();
   })
 
   $('.player2-choice').on("click", function(e) {
@@ -201,7 +201,7 @@ $(document).ready(function() {
     $(`#player2-choice`).text(userChoice);
     $('#player2-buttons').hide();
     playerTwoRef.update({choice: userChoice});
-    compareChoices();
+    // compareChoices();
   })
 
   $('#delete-db').on('click',function(e){
