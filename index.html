@@ -16,7 +16,7 @@
     <div class="jumbotron">
       <h1 class="text-center">Rock Paper Scissors!</h1>
       <button id="delete-db">Delete Firebase</button>
-      <span id="people-connected"></span>
+      <p>People Connected: <span id="people-connected"></span></p>
     </div>
     <!-- Row -->
     <div class="row" id="name-submit">
@@ -36,9 +36,14 @@
       <div class="col-md-4">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h3 class="panel-title" id="player1">Player 1</h3>
+            <h3 class="panel-title"><span id="player1">Player 1</span></h3>
           </div>
           <div class="panel-body">
+            <h2>
+              Wins: <span id="player-1-wins"></span>
+              Losses: <span id="player-1-losses"></span>
+              Ties: <span id="player-1-ties"></span>
+            </h2>
             <div id="player1-buttons" style="display: none">
               <button class="player1-choice" data-choice="rock">Rock</button>
               <button class="player1-choice" data-choice="paper">Paper</button>
@@ -67,9 +72,14 @@
       <div class="col-md-4">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h3 class="panel-title" id="player2">Player 2</h3>
+            <h3 class="panel-title"><span id="player1">Player 2</span></h3>
           </div>
           <div class="panel-body" id="">
+            <h2>
+              Wins: <span id="player-2-wins"></span>
+              Losses: <span id="player-2-losses"></span>
+              Ties: <span id="player-2-ties"></span>
+            </h2>
             <div id="player2-buttons" style="display: none">
               <button class="player2-choice" data-choice="rock">Rock</button>
               <button class="player2-choice" data-choice="paper">Paper</button>

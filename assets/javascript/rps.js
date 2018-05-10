@@ -1,7 +1,7 @@
 
 $(document).ready(function() {
   // Define Firebase
-  var config = {
+  const config = {
     apiKey: "AIzaSyDeMXQCMoGam_N4-TjyuwTykp4oHJLP4F0",
     authDomain: "to-do-list-802bc.firebaseapp.com",
     databaseURL: "https://to-do-list-802bc.firebaseio.com",
@@ -12,26 +12,26 @@ $(document).ready(function() {
   firebase.initializeApp(config);
 
   // Assign the reference to the database to a variable named 'database'
-  var database = firebase.database();
+  const database = firebase.database();
   
   
-  var usernameInput = $('#username');
-  var textInput = $('#text');
-  var postButton = $('#post');
-  var currentPlayer;
-  var peopleConnected;
+  const usernameInput = $('#username');
+  const textInput = $('#text');
+  const postButton = $('#post');
+  let currentPlayer;
+  let peopleConnected;
 
   // Ref to where we will store connections
-  var connectionsRef = database.ref("/connections");
+  const connectionsRef = database.ref("/connections");
   //Provided by Firebase
-  var connectedRef = database.ref(".info/connected");
+  const connectedRef = database.ref(".info/connected");
 
 
   // Save useful references for using throughout the app
-  var playerRef = database.ref('players');
-  var playerOneRef = playerRef.child('player1');
-  var playerTwoRef = playerRef.child('player2');
-  var msgRef = database.ref('/messages');
+  const playerRef = database.ref('players');
+  const playerOneRef = playerRef.child('player1');
+  const playerTwoRef = playerRef.child('player2');
+  const msgRef = database.ref('/messages');
 
 
   // Firebase data listeners
@@ -43,7 +43,7 @@ $(document).ready(function() {
       // If the game isn't already full
       // if(peopleConnected < 2) {
         // Add user to the connections list.
-        var con = connectionsRef.push(true);
+        let con = connectionsRef.push(true);
         // Remove user from the connection list when they disconnect.
         con.onDisconnect().remove();
       // }
@@ -58,7 +58,6 @@ $(document).ready(function() {
 
 
   playerOneRef.on('child_changed', function(snap) {
-    // console.log(`Val:${snap.val()} Key: ${snap.key}`);
 
     // If a name is being submitted, change the button data-attr, so
     // that the second person who picks their name second is writing their
@@ -73,9 +72,9 @@ $(document).ready(function() {
     // go inside Firebase data listeners. Any non-shared data is placed inside JQuery
     // listeners. 
     compareChoices();
-
-    $()
-
+    // wins
+    // losses
+    // ties
   })
 
   playerTwoRef.on('child_changed', function(snap) {
@@ -148,6 +147,36 @@ $(document).ready(function() {
         $('#player2').text(data);
       })
     
+    // Player Scores
+
+    // Player 1
+    grabValFromFirebase('players/player1','wins')
+      .then((data) => {
+        $('#player-1-wins').text(data);
+      })
+    grabValFromFirebase('players/player1','losses')
+      .then((data) => {
+        $('#player-1-losses').text(data);
+      })
+    grabValFromFirebase('players/player1','ties')
+      .then((data) => {
+        $('#player-1-ties').text(data);
+      })
+
+    // Player 2
+    grabValFromFirebase('players/player2','wins')
+      .then((data) => {
+        $('#player-2-wins').text(data);
+      })
+    grabValFromFirebase('players/player2','losses')
+      .then((data) => {
+        $('#player-2-losses').text(data);
+      })
+    grabValFromFirebase('players/player2','ties')
+      .then((data) => {
+        $('#player-2-ties').text(data);
+      })
+
   })
 
 
@@ -207,7 +236,8 @@ $(document).ready(function() {
 
   /**
    * Grabs the player choices from firebase and checks to see if both players have picked a choice.
-   * If both players have picked a choice, run RPS logic on their choices to determine the winner.
+   * If both players have picked a choice, run RPS logic on their choices to determine the winner and increment
+   * their scores
    * Wrap the call to RPS logic in a JQuery .text() or .append() to show the result 
    */
   function compareChoices() {
@@ -218,6 +248,10 @@ $(document).ready(function() {
     .then((choices) => {
       if(choices[0].length > 0 && choices[1].length > 0) {
         rpsLogic(choices[0],choices[1]);
+        // Render Outcome to both players
+        // Player 1 choice
+        // Player 2 choice
+        // Change The Winner is to winner
       }
     })
   }
@@ -292,6 +326,12 @@ $(document).ready(function() {
  
   }
 
+
+  // Game logic functions
+  
+  /**
+   * Increments the players ties
+   */
   function tie() {
     const playerOneTies = grabValFromFirebase('players/player1','ties');
     const playerTwoTies = grabValFromFirebase('players/player2','ties');
@@ -305,6 +345,8 @@ $(document).ready(function() {
       })
   }
   /**
+   * Increments the players wins/losses depending on outcome
+   * 
    * @param  {string} winner: is the winner of rock paper scissors represented as 'player1'/'player2'
    */
   function winner(champ) {
@@ -331,6 +373,8 @@ $(document).ready(function() {
       })
   }
 
+
+  // Firebase Functions
 
   /**
    * Sets of the initial keys for game data on Firebase 
