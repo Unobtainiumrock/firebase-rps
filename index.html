@@ -36,17 +36,15 @@
       <div class="col-md-4">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h3 class="panel-title">Player 1</h3>
+            <h3 class="panel-title" id="player1">Player 1</h3>
           </div>
           <div class="panel-body">
-            <!-- Form to pick player-->
-            <form role="form">
-              <div class="form-group">
-                <label for="name-input">Name:</label>
-                <input class="form-control" id="name-input" type="text">
-              </div>
-              <!-- <button class="btn btn-default" id="add-user" type="submit data" data-player="player1">Submit</button> -->
-            </form>
+            <div id="player1-buttons" style="display: none">
+              <button class="player1-choice" data-choice="rock">Rock</button>
+              <button class="player1-choice" data-choice="paper">Paper</button>
+              <button class="player1-choice" data-choice="scissors">Scissors</button>
+            </div>
+            <div id="player1-choice"></div>
           </div>
         </div>
       </div>
@@ -69,17 +67,15 @@
       <div class="col-md-4">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h3 class="panel-title">Player 2</h3>
+            <h3 class="panel-title" id="player2">Player 2</h3>
           </div>
-          <div class="panel-body">
-            <!-- Form to pick player-->
-            <form role="form">
-              <div class="form-group">
-                <label for="name-input">Name:</label>
-                <input class="form-control" id="name-input" type="text">
-              </div>
-              <!-- <button class="btn btn-default" id="add-user" type="submit data" data-player="player1">Submit</button> -->
-            </form>
+          <div class="panel-body" id="">
+            <div id="player2-buttons" style="display: none">
+              <button class="player2-choice" data-choice="rock">Rock</button>
+              <button class="player2-choice" data-choice="paper">Paper</button>
+              <button class="player2-choice" data-choice="scissors">Scissors</button>
+            </div>
+            <div id="player2-choice"></div>
           </div>
         </div>
       </div>
