@@ -84,7 +84,7 @@ $(document).ready(function() {
 
   msgRef.on('child_added',function(snap) {
     var msgObj = snap.val();
-    console.log(msgObj);
+    // console.log(msgObj);
     // msg user
 
     var msgDiv = $('<div>');
@@ -130,11 +130,11 @@ $(document).ready(function() {
 
     if(snap.child('connections').exists()) {
       var connectionNum = snap.child('connections').numChildren();
-      console.log(`A connection exists! There are ${connectionNum} connections`);
+      // console.log(`A connection exists! There are ${connectionNum} connections`);
       peopleConnected = connectionNum;
-      console.log(`Local peopleConnected: ${peopleConnected}`);
+      // console.log(`Local peopleConnected: ${peopleConnected}`);
     } else {
-      console.log('No connections exist');
+      // console.log('No connections exist');
     }
 
     // Player names
@@ -169,12 +169,9 @@ $(document).ready(function() {
     // Show buttons
     $(`#${playerNumber}-buttons`).show();
 
-    // Add a data-attribute to Firebase for tracking the current player
-    // firebaseDataAttr('current-player',)
-
     // Displays the chosen username to the DOM. note: it will also display to the opponent
     // because the .update() triggers a change in Firebase, which triggers a change on the DOM
-    $(`#${playerNumber}`).text(`${name}`);
+    $(`#${playerNumber}`).text(name);
   })
 
   // This controls writing to the messages data ref on Fire Base
@@ -192,7 +189,6 @@ $(document).ready(function() {
     $(`#player1-choice`).text(userChoice);
     $('#player1-buttons').hide();
     playerOneRef.update({choice: userChoice});
-    // compareChoices();
   })
 
   $('.player2-choice').on("click", function(e) {
@@ -201,7 +197,6 @@ $(document).ready(function() {
     $(`#player2-choice`).text(userChoice);
     $('#player2-buttons').hide();
     playerTwoRef.update({choice: userChoice});
-    // compareChoices();
   })
 
   $('#delete-db').on('click',function(e){
@@ -242,9 +237,9 @@ $(document).ready(function() {
       player1 = r;
     }
     if(player1 === 'paper') {
-      r = 2;
+      r = 0;
       p = 1;
-      s = 0;
+      s = 2;
       player1 = p;
     }
     if(player1 === 'scissors') {
@@ -278,18 +273,7 @@ $(document).ready(function() {
       // Empty player choices from Firebase to prevent infinite recursion
       playerOneRef.update({choice: ''});
       playerTwoRef.update({choice: ''});
-      // incrememnt each players ties
-      const playerOneTies = grabValFromFirebase('players/player1','ties');
-      const playerTwoTies = grabValFromFirebase('players/player2','ties');
-      const promiseArray = [playerOneTies,playerTwoTies];
-      Promise.all(promiseArray)
-        .then((ties) => {
-          let p1Ties = parseInt(ties[0]);
-          let p2Ties = parseInt(ties[1]);
-          playerOneRef.update({ties: p1Ties + 1});
-          playerTwoRef.update({ties: p2Ties + 1});
-        })
-
+      tie();
     }
 
     if(player1 > player2) {
@@ -298,16 +282,17 @@ $(document).ready(function() {
       playerTwoRef.update({choice: ''});
       // increment player1 wins
       // increment player2 losses
-      const playerOneWins = grabValFromFirebase('players/player1/','wins');
-      const playerTwoLosses = grabValFromFirebase('players/player2/','losses');
-      const promiseArray = [playerOneWins,playerTwoLosses];
-      Promise.all(promiseArray)
-        .then((scores) => {
-          let p1Wins = scores[0];
-          let p2Losses = scores[1];
-          playerOneRef.update({wins: p1Wins + 1});
-          playerTwoRef.update({losses: p2Losses + 1});
-        })
+      // const playerOneWins = grabValFromFirebase('players/player1/','wins');
+      // const playerTwoLosses = grabValFromFirebase('players/player2/','losses');
+      // const promiseArray = [playerOneWins,playerTwoLosses];
+      // Promise.all(promiseArray)
+      //   .then((scores) => {
+      //     let p1Wins = scores[0];
+      //     let p2Losses = scores[1];
+      //     playerOneRef.update({wins: p1Wins + 1});
+      //     playerTwoRef.update({losses: p2Losses + 1});
+      //   })
+      winner('player1');
     }
 
     if(player1 < player2) {
@@ -316,19 +301,60 @@ $(document).ready(function() {
       playerTwoRef.update({choice: ''});
       // increment player1 losses
       // incrememnt player2 wins
-      const playerOneLosses = grabValFromFirebase('players/player1/', 'losses');
-      const playerTwoWins = grabValFromFirebase('players/player2/','wins');
-      const promiseArray = [playerOneLosses,playerTwoWins];
-      Promise.all(promiseArray)
-        .then((scores) => {
-          let p1Losses = scores[0];
-          let p2Wins = scores[1];
-          playerOneRef.update({losses: p1Losses + 1});
-          playerTwoRef.update({wins: p2Wins + 1});
-        })
+      // const playerOneLosses = grabValFromFirebase('players/player1/', 'losses');
+      // const playerTwoWins = grabValFromFirebase('players/player2/','wins');
+      // const promiseArray = [playerOneLosses,playerTwoWins];
+      // Promise.all(promiseArray)
+      //   .then((scores) => {
+      //     let p1Losses = scores[0];
+      //     let p2Wins = scores[1];
+      //     playerOneRef.update({losses: p1Losses + 1});
+      //     playerTwoRef.update({wins: p2Wins + 1});
+      //   })
+      winner('player2');
     }
  
   }
+
+  function tie() {
+    const playerOneTies = grabValFromFirebase('players/player1','ties');
+    const playerTwoTies = grabValFromFirebase('players/player2','ties');
+    const promiseArray = [playerOneTies,playerTwoTies];
+    Promise.all(promiseArray)
+      .then((ties) => {
+        let p1Ties = parseInt(ties[0]);
+        let p2Ties = parseInt(ties[1]);
+        playerOneRef.update({ties: p1Ties + 1});
+        playerTwoRef.update({ties: p2Ties + 1});
+      })
+  }
+  /**
+   * @param  {string} winner: is the winner of rock paper scissors represented as 'player1'/'player2'
+   */
+  function winner(champ) {
+    let winPath, losePath;
+
+    if(champ === 'player1') {
+      winPath = champ;
+      losePath = 'player2';
+    }
+    if(champ === 'player2') {
+      winPath = champ;
+      losePath = 'player1';
+    }
+
+    const winner = grabValFromFirebase(`players/${winPath}/`,'wins');
+    const loser = grabValFromFirebase(`players/${losePath}/`,'losses');
+    const promiseArray = [winner,loser];
+    Promise.all(promiseArray)
+      .then((scores) => {
+        let winner = scores[0];
+        let loser = scores[1];
+        database.ref(`players/${winPath}`).update({wins: winner + 1});
+        database.ref(`players/${losePath}`).update({losses: loser + 1});
+      })
+  }
+
 
   /**
    * Sets of the initial keys for game data on Firebase 
@@ -363,7 +389,7 @@ $(document).ready(function() {
       .once('value')
       .then(function(snapshot) {
         var value = snapshot.val();
-        console.log(value);
+        // console.log(value);
         // return new Promise(function(resolve,reject) {
           // resolve(value);
         // })
