@@ -366,8 +366,8 @@ $(document).ready(function() {
     const promiseArray = [winner,loser];
     Promise.all(promiseArray)
       .then((scores) => {
-        let winner = scores[0];
-        let loser = scores[1];
+        let winner = parseInt(scores[0]);
+        let loser = parseInt(scores[1]);
         database.ref(`players/${winPath}`).update({wins: winner + 1});
         database.ref(`players/${losePath}`).update({losses: loser + 1});
       })
