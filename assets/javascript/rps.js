@@ -35,7 +35,7 @@ $(document).ready(function() {
 
 
   // Firebase data listeners
-  
+   
   connectedRef.on('value', function(snap) {
     
     // If they are connected..
@@ -117,8 +117,8 @@ $(document).ready(function() {
           ties: 0,
           choice: ''
         },
-        dataAttr: {
-          first: ''
+        round: {
+          round: 1
         }
       }
       
@@ -179,6 +179,25 @@ $(document).ready(function() {
 
   })
 
+  database.ref('/round').on('child_changed', (snap) => {
+
+    // Render Outcome to both players if they've both picked something
+    // They will both have picked something, because the round only updates after both people pick
+    // Player 1 choice
+    grabValFromFirebase('/players/player1','choice')
+      .then((data) => {
+        console.log('This then method was entered',data);
+        $('#player1-choice').text(data);
+      })
+
+    // Player 2 choice
+    grabValFromFirebase('/players/player2','choice')
+      .then((data) => {
+        // console/
+        $('#player2-choice').text(data);
+      })
+
+  });
 
   // JQuery listeners
   $(document).on('click', '#add-user', function(e) {
@@ -214,7 +233,6 @@ $(document).ready(function() {
 
   $('.player1-choice').on("click", function(e) {
     var userChoice = $(this).attr('data-choice');
-    // Target the id of add-user
     $(`#player1-choice`).text(userChoice);
     $('#player1-buttons').hide();
     playerOneRef.update({choice: userChoice});
@@ -222,7 +240,6 @@ $(document).ready(function() {
 
   $('.player2-choice').on("click", function(e) {
     var userChoice = $(this).attr('data-choice');
-    // Target the id of add-user
     $(`#player2-choice`).text(userChoice);
     $('#player2-buttons').hide();
     playerTwoRef.update({choice: userChoice});
@@ -247,11 +264,19 @@ $(document).ready(function() {
    Promise.all(promiseArray)
     .then((choices) => {
       if(choices[0].length > 0 && choices[1].length > 0) {
+
+      // We wrapped the rps logic in a '.then' method because we need the rounds to update first,
+      // which triggers a re-render to the DOM. That re-render pulls the user choices from Firebase
+      // Our rps function clears out users in firebase, so if rpsLogic isn't wrapped in a '.then',
+      // We clear out the user's choices before they can be rendered on the page to their opponents
+       grabValFromFirebase('/round','round')
+       .then((round) => {
+         database.ref('/round').update({round: round + 1});
+       })
+       .then(() => {
         rpsLogic(choices[0],choices[1]);
-        // Render Outcome to both players
-        // Player 1 choice
-        // Player 2 choice
-        // Change The Winner is to winner
+       })
+
       }
     })
   }
@@ -384,19 +409,19 @@ $(document).ready(function() {
     database.ref('/players/player1').set(data.player1);
     database.ref('/players/player2').set(data.player2);
     database.ref('/turn').set({ turn: data.turn });
-    database.ref('/data-attributes').set(data.dataAttr);
+    database.ref('/round').set(data.round);
   }
 
   /**
-   * @param  {string} key: is the key we want to add to Firebase's /data-attributes path
+   * @param  {string} key: is the key we want to add to Firebase's /round path
    * @param  {string} val: is the value associated with the key added to Firebase. A string is used
    *                       for numbers as well, since we can just parseInt() form string to integer
    */
-  function firebaseDataAttr(key,val) {
+  function firebaseRoundChange(key,val) {
     var updaterObj = {};
     updaterObj[key] = val;
 
-    database.ref('/data-attributes').update(updaterObj);
+    database.ref('/round').update(updaterObj);
   }
 
   /**
