@@ -460,6 +460,8 @@ $(document).ready(function() {
       losePath = 'player1';
     }
 
+    // This one doesn't need promise all, since we aren't comparing two values from
+    // two different grabVal calls. Didn't have time to revert this one.
     const winner = grabValFromFirebase(`players/${winPath}/`,'wins');
     const loser = grabValFromFirebase(`players/${losePath}/`,'losses');
     const promiseArray = [winner,loser];
