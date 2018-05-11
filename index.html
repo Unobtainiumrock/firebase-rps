@@ -13,9 +13,9 @@
   <div class="container">
     <br>
     <!-- Jumbotron -->
-    <div class="jumbotron">
+    <div class="jumbotron" id="jumbo">
       <h1 class="text-center">Rock Paper Scissors!</h1>
-      <button id="delete-db">Delete Firebase</button>
+      <!-- <button id="delete-db">Delete Firebase</button> -->
       <p>People Connected: <span id="people-connected"></span></p>
       <p>Rounds: <span id="current-round"></span></p>
     </div>
@@ -36,7 +36,7 @@
       <!-- Left Panel PLAYER 1!!!!!!-->
       <div class="col-md-4">
         <div class="panel panel-default">
-          <div class="panel-heading">
+          <div class="panel-heading" id="panel-head-style">
             <h3 class="panel-title">Player Name: <span id="player1"></span></h3>
           </div>
           <div class="panel-body">
@@ -60,11 +60,11 @@
       <!-- Middle Panel -->
       <div class="col-md-4">
         <div class="panel panel-default">
-          <div class="panel-heading">
+          <div class="panel-heading" id="panel-head-style">
             <h3 class="panel-title"></h3>Battleground</h3>
           </div>
           <div class="panel-body">
-            <h2 id="battle-outcome">The winner Is</h2>
+            <h2 class="text-center" id="battle-outcome"></h2>
             <br>
           </div>
         </div>
@@ -73,7 +73,7 @@
       <!-- Right Panel PLAYER 2!!!!!!-->
       <div class="col-md-4">
         <div class="panel panel-default">
-          <div class="panel-heading">
+          <div class="panel-heading" id="panel-head-style">
             <h3 class="panel-title">Player Name: <span id="player2"></span></h3>
           </div>
           <div class="panel-body" id="">
@@ -100,7 +100,7 @@
       <div class="row">
         <div class="col-md-4">
             <div class="panel panel-default">
-              <div class="panel-heading">
+              <div class="panel-heading" id="panel-head-style">
                 <h3 class="panel-title">Chat</h3>
               </div>
               <div class="panel-body">
@@ -122,7 +122,7 @@
           </div>
           <div class="col-md-8">
               <div class="panel panel-default">
-                <div class="panel-heading">
+                <div class="panel-heading" id="panel-head-style">
                   <h3 class="panel-title">Messages</h3>
                 </div>
                 <div class="panel-body">

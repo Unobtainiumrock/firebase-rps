@@ -200,7 +200,6 @@ $(document).ready(function() {
     // Player 1 choice
     grabValFromFirebase('/players/player1','choice')
       .then((data) => {
-        console.log('This then method was entered',data);
         $('#player1-choice').text(data);
       })
 
@@ -349,39 +348,45 @@ $(document).ready(function() {
     // We use clearing of choices in these blocks to act as control flow for
     // the 'if' block in compareChoices, which is meant to act as a base case
     if(player1 === player2) {
+      // Store local outcome
+      
       // Empty player choices from Firebase to prevent infinite recursion
       playerOneRef.update({choice: ''});
       playerTwoRef.update({choice: ''});
       tie();
-      rockPaperScissorsInterval()
+      rpsCatchPhrase()
         .then(() => {
-          console.log('Round has ended after 4.5 seconds');
           resetRound();
         })
+        
     }
 
     if(player1 > player2) {
+      // Store local outcome
+      
       // Empty player choices from Firebase to prevent infinite recurison
       playerOneRef.update({choice: ''});
       playerTwoRef.update({choice: ''});
       winner('player1');
-      rockPaperScissorsInterval()
+      rpsCatchPhrase()
         .then(() => {
-          console.log('Round has ended after 4.5 seconds');
           resetRound();
         })
+        
     }
 
     if(player1 < player2) {
+      // Store local outcome
+      
       // Empty Player choices from Firebase to prevent infinite recursion
       playerOneRef.update({choice: ''});
       playerTwoRef.update({choice: ''});
       winner('player2');
-      rockPaperScissorsInterval()
-        .then(async (func) => {
-          console.log('Round has ended after 4.5 seconds');
+      rpsCatchPhrase()
+        .then(() => {
           resetRound();
         })
+        
     }
  
   }
@@ -408,7 +413,8 @@ $(document).ready(function() {
   
     for(i = 0; i < 3; i++) {
       let x = await resolveAfter(i);
-      console.log(choicesText[x]);
+      console.log(choiceText[x]);
+      $('#battle-outcome').text(choiceText[x]);
     }
     // console.log(x); // 10
   }

@@ -1,0 +1,14 @@
+
+body {
+  background-image: linear-gradient(87deg,rgb(142,162,165) 0, rgb(242,204,143)); 
+}
+
+#jumbo {
+  background: rgb(89, 66 , 54);
+  color: rgb(242,204,143);
+}
+
+#panel-head-style {
+  background-color: rgb(142,162,165);
+  color: rgb(253,253,255);
+}
