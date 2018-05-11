@@ -1,11 +1,11 @@
-# Fun With Giphys
+# Firebase Rock Paper Scissors
 
-Used Firebase to mack a rock paper scissors game. The data that persists in firebase includes the number of instances of the app running (as connections), each player's name/scores/choice, and messages.
+Used Firebase to make a rock paper scissors game. The data that persists in firebase includes the number of instances of the app running (as connections), each player's name/scores/choice, and messages.
 
 ## Getting Started
 
 Hosted on [GitHub pages](https://unobtainiumrock.github.io/firebase-rps/).
-![Rock Paper Scissors Firebase](./assets/images/giphy-api.png "Rock Paper Scissors Firebase")
+![Rock Paper Scissors Firebase](./assets/images/rps.png "Rock Paper Scissors Firebase")
 
 
 ## Built With
