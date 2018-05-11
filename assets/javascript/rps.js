@@ -11,16 +11,23 @@ $(document).ready(function() {
   };
   firebase.initializeApp(config);
 
-  // Assign the reference to the database to a variable named 'database'
+  // Firebase short-hand
   const database = firebase.database();
   
   
+  // JQuery short-hands
   const usernameInput = $('#username');
   const textInput = $('#text');
   const postButton = $('#post');
+
+  // Local Variables for each app instance
   let currentPlayer;
   let currentPlayerButton;
   let peopleConnected;
+  
+
+  // An array to iterate with a setInterval for displaying a nifty text series to players
+  const choiceText = ['Rock!','Paper!','Scissors!'];
 
   // Ref to where we will store connections
   const connectionsRef = database.ref("/connections");
@@ -28,7 +35,7 @@ $(document).ready(function() {
   const connectedRef = database.ref(".info/connected");
 
 
-  // Save useful references for using throughout the app
+  // More Firebase refs
   const playerRef = database.ref('players');
   const playerOneRef = playerRef.child('player1');
   const playerTwoRef = playerRef.child('player2');
@@ -346,7 +353,11 @@ $(document).ready(function() {
       playerOneRef.update({choice: ''});
       playerTwoRef.update({choice: ''});
       tie();
-      resetRound();
+      rockPaperScissorsInterval()
+        .then(() => {
+          console.log('Round has ended after 4.5 seconds');
+          resetRound();
+        })
     }
 
     if(player1 > player2) {
@@ -354,7 +365,11 @@ $(document).ready(function() {
       playerOneRef.update({choice: ''});
       playerTwoRef.update({choice: ''});
       winner('player1');
-      resetRound();
+      rockPaperScissorsInterval()
+        .then(() => {
+          console.log('Round has ended after 4.5 seconds');
+          resetRound();
+        })
     }
 
     if(player1 < player2) {
@@ -362,7 +377,11 @@ $(document).ready(function() {
       playerOneRef.update({choice: ''});
       playerTwoRef.update({choice: ''});
       winner('player2');
-      resetRound();
+      rockPaperScissorsInterval()
+        .then(async (func) => {
+          console.log('Round has ended after 4.5 seconds');
+          resetRound();
+        })
     }
  
   }
@@ -370,13 +389,41 @@ $(document).ready(function() {
 
   // Game logic functions
 
+  
+  /**
+   * @param  {number} x: is an iterator number passed by the rpsCatchPhrase for loop
+   */
+  function resolveAfter(x) { 
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve(x);
+      }, 1000);
+    });
+  }
+  
+  /**
+   * Logs 'Rock!' 'Paper!' 'Scissors!' with one second delays between each log
+   */
+  async function rpsCatchPhrase() {
+  
+    for(i = 0; i < 3; i++) {
+      let x = await resolveAfter(i);
+      console.log(choicesText[x]);
+    }
+    // console.log(x); // 10
+  }
+
+  /**
+   * Resets the display of buttons specific to each person's instance. Remember,
+   * the only rendering that is shared will be from DOM manipulations executed via Firebase
+   */
   function resetRound() {
     console.log(currentPlayerButton);
     $(`#${currentPlayerButton}`).show();
   }
   
   /**
-   * Increments the players ties
+   * Increments the players ties 
    */
   function tie() {
     const playerOneTies = grabValFromFirebase('players/player1','ties');
