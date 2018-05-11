@@ -4,9 +4,9 @@ Used Firebase to make a rock paper scissors game. The data that persists in fire
 
 ## Getting Started
 For graders testing functionality:
-* 1) Use the delete Fire Base button to clear out the Fire Base
-* 2) Refresh each tab for the game after clearing the DB out, in order to have a fresh start
-* note: it will cycle through rounds just fine after you go through your first round.
+*  Use the delete Fire Base button to clear out the Fire Base
+*  Refresh each tab for the game after clearing the DB out, in order to have a fresh start
+*  note: it will cycle through rounds just fine after you go through your first round.
 
 Hosted on [GitHub pages](https://unobtainiumrock.github.io/firebase-rps/).
 ![Rock Paper Scissors Firebase](./assets/images/rps.png "Rock Paper Scissors Firebase")
