@@ -17,6 +17,7 @@
       <h1 class="text-center">Rock Paper Scissors!</h1>
       <button id="delete-db">Delete Firebase</button>
       <p>People Connected: <span id="people-connected"></span></p>
+      <p>Rounds: <span id="current-round"></span></p>
     </div>
     <!-- Row -->
     <div class="row" id="name-submit">
@@ -24,7 +25,7 @@
         <form role="form">
           <div class="form-group">
             <label for="name-input">Enter Your Name:</label>
-            <input class="form-control" id="name-input" type="text">
+            <input class="form-control" id="name-input" type="text" placeholder="Name Goes Here">
           </div>
           <button class="btn btn-default" id="add-user" type="submit data" data-player="player1">Submit</button>
         </form>
@@ -104,9 +105,19 @@
                 <h3 class="panel-title">Chat</h3>
               </div>
               <div class="panel-body">
-                <input id="username" type="text" placeholder="Name"><br/>
-                <input id="text" type="text" placeholder="Message"><br/>
-                <button id="post">Post</button><br/>
+
+                <form role="form">
+                  <input class="form-control" id="text" type="text" placeholder="Message"><br/>
+                  <button id="post" type="submit data">Post</button><br/>
+                </form>
+
+                <!-- <form role="form">
+                    <div class="form-group">
+                      <label for="name-input">Enter Your Name:</label>
+                    </div>
+                    <button class="btn btn-default" id="add-user" type="submit data" data-player="player1">Submit</button>
+                  </form> -->
+
               </div>
             </div>
           </div>
@@ -116,7 +127,7 @@
                   <h3 class="panel-title">Messages</h3>
                 </div>
                 <div class="panel-body">
-                  <div id="results">Results</div>
+                  <div id="results"></div>
                 </div>
               </div>
             </div>

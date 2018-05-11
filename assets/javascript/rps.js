@@ -102,7 +102,7 @@ $(document).ready(function() {
     if(snap.child('/').numChildren() === 1) {
 
       var gameData = {
-        turn: 1,
+
         player1: {
           name: '',
           wins: 0,
@@ -177,6 +177,12 @@ $(document).ready(function() {
         $('#player-2-ties').text(data);
       })
 
+    // Current Round
+    // grabValFromFirebase('/round','round')
+    //   .then((data) => {
+    //     $('#current-round').text(data);
+    //     }) 
+
   })
 
   database.ref('/round').on('child_changed', (snap) => {
@@ -220,11 +226,14 @@ $(document).ready(function() {
     // Displays the chosen username to the DOM. note: it will also display to the opponent
     // because the .update() triggers a change in Firebase, which triggers a change on the DOM
     $(`#${playerNumber}`).text(name);
+    // Set the chat' submit button' data attribute the the player's name we grabbed from the form
+    $('#post').attr('msg-sender',name);
   })
 
   // This controls writing to the messages data ref on Fire Base
-  postButton.on('click',function() {
-    var user = usernameInput.val();
+  postButton.on('click',function(e) {
+    e.preventDefault();
+    var user = postButton.attr('msg-sender');
     var msg = textInput.val();
     database.ref('/messages').push({user, msg});
     textInput.val('');
@@ -353,6 +362,10 @@ $(document).ready(function() {
 
 
   // Game logic functions
+
+  function resetRound() {
+    $(`#${playerNumber}-buttons`).show();
+  }
   
   /**
    * Increments the players ties
@@ -408,10 +421,9 @@ $(document).ready(function() {
   function fireBaseInit(data) {
     database.ref('/players/player1').set(data.player1);
     database.ref('/players/player2').set(data.player2);
-    database.ref('/turn').set({ turn: data.turn });
     database.ref('/round').set(data.round);
   }
-
+  
   /**
    * @param  {string} key: is the key we want to add to Firebase's /round path
    * @param  {string} val: is the value associated with the key added to Firebase. A string is used
