@@ -19,6 +19,7 @@ $(document).ready(function() {
   const textInput = $('#text');
   const postButton = $('#post');
   let currentPlayer;
+  let currentPlayerButton;
   let peopleConnected;
 
   // Ref to where we will store connections
@@ -178,10 +179,10 @@ $(document).ready(function() {
       })
 
     // Current Round
-    // grabValFromFirebase('/round','round')
-    //   .then((data) => {
-    //     $('#current-round').text(data);
-    //     }) 
+    grabValFromFirebase('/round','round')
+      .then((data) => {
+        $('#current-round').text(data);
+        }) 
 
   })
 
@@ -216,6 +217,9 @@ $(document).ready(function() {
     var playerRef = database.ref('players'); 
     // Create a ref to the specific player 
     var thisPlayer = playerRef.child(playerNumber);
+    // Store a local 
+    currentPlayer = name;
+    currentPlayerButton = `${playerNumber}-buttons`;
     // Update the specific players name key with the value taken from the name input
     thisPlayer.update({ name });
     // Hide the form for submitting username
@@ -342,6 +346,7 @@ $(document).ready(function() {
       playerOneRef.update({choice: ''});
       playerTwoRef.update({choice: ''});
       tie();
+      resetRound();
     }
 
     if(player1 > player2) {
@@ -349,6 +354,7 @@ $(document).ready(function() {
       playerOneRef.update({choice: ''});
       playerTwoRef.update({choice: ''});
       winner('player1');
+      resetRound();
     }
 
     if(player1 < player2) {
@@ -356,6 +362,7 @@ $(document).ready(function() {
       playerOneRef.update({choice: ''});
       playerTwoRef.update({choice: ''});
       winner('player2');
+      resetRound();
     }
  
   }
@@ -364,7 +371,8 @@ $(document).ready(function() {
   // Game logic functions
 
   function resetRound() {
-    $(`#${playerNumber}-buttons`).show();
+    console.log(currentPlayerButton);
+    $(`#${currentPlayerButton}`).show();
   }
   
   /**
