@@ -24,10 +24,9 @@ $(document).ready(function() {
   let currentPlayer;
   let currentPlayerButton;
   let peopleConnected;
-  
 
   // An array to iterate with a setInterval for displaying a nifty text series to players
-  const choiceText = ['Rock!','Paper!','Scissors!'];
+  let choiceText = ['Rock!','Paper!','Scissors!'];
 
   // Ref to where we will store connections
   const connectionsRef = database.ref("/connections");
@@ -349,7 +348,7 @@ $(document).ready(function() {
     // the 'if' block in compareChoices, which is meant to act as a base case
     if(player1 === player2) {
       // Store local outcome
-      
+      choiceText[3] = "It's a tie!"
       // Empty player choices from Firebase to prevent infinite recursion
       playerOneRef.update({choice: ''});
       playerTwoRef.update({choice: ''});
@@ -363,7 +362,7 @@ $(document).ready(function() {
 
     if(player1 > player2) {
       // Store local outcome
-      
+      choiceText[3] = 'Player 1';
       // Empty player choices from Firebase to prevent infinite recurison
       playerOneRef.update({choice: ''});
       playerTwoRef.update({choice: ''});
@@ -377,7 +376,7 @@ $(document).ready(function() {
 
     if(player1 < player2) {
       // Store local outcome
-      
+      choiceText[3] = 'Player 2!';
       // Empty Player choices from Firebase to prevent infinite recursion
       playerOneRef.update({choice: ''});
       playerTwoRef.update({choice: ''});
@@ -411,7 +410,7 @@ $(document).ready(function() {
    */
   async function rpsCatchPhrase() {
   
-    for(i = 0; i < 3; i++) {
+    for(i = 0; i < 4; i++) {
       let x = await resolveAfter(i);
       console.log(choiceText[x]);
       $('#battle-outcome').text(choiceText[x]);
